@@ -102,7 +102,7 @@ StockPro is designed as a **microservices-ready system** (currently implemented 
 
 ## 📁 Project Structure
 
----
+```
 
 stockpro-backend/
 ├── src/
@@ -139,7 +139,7 @@ stockpro-backend/
 ├── mvnw.cmd
 └── pom.xml
 
----
+```
 ---
 ## ⚙️ Configuration
 
