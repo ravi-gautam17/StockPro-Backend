@@ -102,12 +102,14 @@ StockPro is designed as a **microservices-ready system** (currently implemented 
 
 ## 📁 Project Structure
 
+---
 
 stockpro-backend/
 ├── src/
 │ ├── main/
 │ │ ├── java/
-│ │ │ └── com/stockpro/
+│ │ │ └── com/
+│ │ │ └── stockpro/
 │ │ │ ├── auth/
 │ │ │ │ ├── domain/
 │ │ │ │ ├── dto/
@@ -125,7 +127,8 @@ stockpro-backend/
 │ │
 │ └── test/
 │ └── java/
-│ └── com/stockpro/
+│ └── com/
+│ └── stockpro/
 │ └── StockproBackendApplicationTests.java
 │
 ├── target/
@@ -137,7 +140,7 @@ stockpro-backend/
 └── pom.xml
 
 ---
-
+---
 ## ⚙️ Configuration
 
 Update the following file:
