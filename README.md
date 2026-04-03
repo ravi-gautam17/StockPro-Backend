@@ -119,13 +119,13 @@ db/migration/
 
 ## ⚙️ Configuration
 
-Update:
+Update the following file:
 
 
 src/main/resources/application.yml
 
 
-Example:
+### Example
 
 ```yaml
 spring:
@@ -139,7 +139,7 @@ stockpro:
     secret: your-secret-key
 ▶️ Run the Project
 1️⃣ Start MySQL
-2️⃣ Run backend
+2️⃣ Run Backend
 mvn clean spring-boot:run
 3️⃣ Access API
 http://localhost:8080
@@ -150,21 +150,20 @@ POST /api/v1/auth/login
   "email": "admin@stockpro.local",
   "password": "Admin@123"
 }
-🔐 Auth Header
+🔐 Authorization Header
 Authorization: Bearer <token>
 👤 Get Current User
 GET /api/v1/auth/me
 🗄️ Database (Flyway)
 Version-controlled migrations
-
 Located in:
-
 db/migration/
-Example:
+Example Files
 V1__initial_schema.sql
 V2__assignments_and_capacity_backfill.sql
 
-⚠️ Never modify existing migrations — create new ones.
+⚠️ Important:
+Never modify existing migrations. Always create a new version (V3__...).
 
 📸 Screenshots (Add Yours)
 🔐 Authentication Flow
@@ -173,8 +172,9 @@ V2__assignments_and_capacity_backfill.sql
 
 📦 Inventory View
 
-📁 Place images in: docs/screenshots/
+📁 Place images in:
 
+docs/screenshots/
 ✅ Current Status
 ✔ JWT Authentication implemented
 ✔ Secure APIs
@@ -185,15 +185,15 @@ Phase 3
 Global exception handling
 Swagger security improvements
 HTTP status standardisation
-Future
+Future Enhancements
 Inventory module
-Purchase orders
+Purchase order workflows
 Notifications system
 Analytics dashboard
-Microservices split
+Microservices architecture
 🤝 Contributing
-Fork the repo
-Create feature branch
-Commit changes
-Open PR
+Fork the repository
+Create a feature branch
+Commit your changes
+Open a Pull Request
 
