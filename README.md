@@ -192,10 +192,10 @@ Never modify existing migrations. Always create a new version (V3__...).
 
 # ✅ Current Status
 
-✔ JWT Authentication implemented
-✔ Secure APIs
-✔ Flyway DB migrations
-✔ Role-based structure
+✔ JWT Authentication implemented <br>
+✔ Secure APIs  <br>
+✔ Flyway DB migrations  <br>
+✔ Role-based structure<br>
 
 # 🔜 Roadmap
 
