@@ -1,0 +1,53 @@
+# =============================================================================
+# StockPro — single Spring Boot application (monolith). All domains use this
+# process + one MySQL schema. React SPA talks to /api/v1/** over JSON + JWT.
+# =============================================================================
+spring:
+  application:
+    name: stockpro-backend
+  datasource:
+    url: jdbc:mysql://localhost:3306/stockpro_db?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+        jdbc:
+          time_zone: UTC
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+  mail:
+    host: localhost
+    port: 1025
+    properties:
+      mail.smtp.auth: false
+
+# JWT & CORS — align token expiry with case study (~8 business hours; using 8h)
+stockpro:
+  jwt:
+    secret: "ChangeThisToA256BitMinimumSecretKeyForProductionUseStockPro2026!!"
+    expiration-ms: 28800000
+  cors:
+    allowed-origins:
+      - http://localhost:5173
+      - http://localhost:3000
+
+server:
+  port: 8080
+
+# Swagger UI: http://localhost:8080/swagger-ui/index.html — OpenAPI JSON: /v3/api-docs
+springdoc:
+  swagger-ui:
+    persistAuthorization: true
+    operationsSorter: alpha
+    tagsSorter: alpha
+
+logging:
+  level:
+    com.stockpro: INFO
