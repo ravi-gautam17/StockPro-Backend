@@ -199,16 +199,16 @@ Never modify existing migrations. Always create a new version (V3__...).
 
 # 🔜 Roadmap
 
-Phase 3
-Global exception handling
-Swagger security improvements
-HTTP status standardisation
-Future Enhancements
-Inventory module
-Purchase order workflows
-Notifications system
-Analytics dashboard
-Microservices architecture
+Phase 3 <br>
+Global exception handling <br>
+Swagger security improvements <br>
+HTTP status standardisation <br>
+Future Enhancements <br>
+Inventory module <br>
+Purchase order workflows <br>
+Notifications system <br>
+Analytics dashboard <br>
+Microservices architecture <br>
 
 
 # 🤝 Contributing
