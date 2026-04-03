@@ -1,4 +1,10 @@
 package com.stockpro.auth.domain;
-
-public class UserRole {
+/**
+ * Maps to case-study roles: Warehouse Staff, Inventory Manager, Purchase Officer, Admin.
+ */
+public enum UserRole {
+    STAFF,
+    MANAGER,
+    OFFICER,
+    ADMIN
 }
