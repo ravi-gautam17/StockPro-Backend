@@ -50,7 +50,7 @@ public class SecurityConfig {
                                 "/v3/api-docs/**",
                                 "/swagger-ui.html",
                                 "/swagger-ui/**").permitAll()
-                        /* If spring doc paths are customised under /api, allow those too */
+                        /* If springdoc paths are customised under /api, allow those too */
                         .requestMatchers("/api/v3/api-docs", "/api/v3/api-docs/**", "/api/swagger-ui.html", "/api/swagger-ui/**").permitAll()
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .anyRequest().authenticated())
