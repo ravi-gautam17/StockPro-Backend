@@ -6,6 +6,9 @@ import lombok.*;
 
 import java.time.Instant;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Entity
 @Table(name = "users")
 @Getter
