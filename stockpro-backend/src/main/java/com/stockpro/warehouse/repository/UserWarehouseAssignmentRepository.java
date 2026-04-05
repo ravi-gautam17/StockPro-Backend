@@ -7,7 +7,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface UseWarehouseAssignmentRepository extends JpaRepository<UserWarehouseAssignment, Long> {
+public interface UserWarehouseAssignmentRepository extends JpaRepository<UserWarehouseAssignment, Long> {
 
     long countByUser_Id(Long userId);
 
