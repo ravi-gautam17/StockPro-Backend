@@ -119,9 +119,9 @@ http://localhost:8080
 Ravi Gautam
 
 
-⭐ Future Enhancements
-Product variants (size, colour, etc.)
-Supplier-product mapping
-Bulk import/export APIs
-Image upload support
-Product analytics & reporting
+## ⭐ Future Enhancements
+- Product variants (size, colour, etc.)
+- Supplier-product mapping
+- Bulk import/export APIs
+- Image upload support
+- Product analytics & reporting
