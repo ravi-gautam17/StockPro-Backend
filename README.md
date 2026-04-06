@@ -83,7 +83,7 @@ All APIs require JWT authentication.
 Header:
 Authorization: Bearer <JWT_TOKEN>
 ```
-## 🧠 Key Concepts
+### 🧠 Key Concepts
 
 - Suppliers represent external vendors providing products
 - Supports filtering and search for easy lookup
