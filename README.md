@@ -130,11 +130,11 @@ http://localhost:8080
 Ravi Gautam
 
 ### ⭐ Future Enhancements
-Supplier-product mapping
-Purchase order management
-Advanced rating system (with rating count & reviews)
-Supplier analytics dashboard
-Performance-based supplier ranking
+- Supplier-product mapping
+- Purchase order management
+- Advanced rating system (with rating count & reviews)
+- Supplier analytics dashboard
+- Performance-based supplier ranking
 
 
 
