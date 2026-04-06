@@ -52,21 +52,23 @@ Response:
 ```
 
 ### 2. Get All Warehouses
-
+```
 GET /api/v1/warehouses
+```
 
 ### 3. Get Warehouse by ID
-
+```
 GET /api/v1/warehouses/{id}
+```
 
 ### 4. Update Warehouse
-
+```
 PUT /api/v1/warehouses/{id}
-
+```
 ### 5. Get Warehouse Stock
-
+```
 GET /api/v1/warehouses/{id}/stock
-
+```
 ⚠️ Note: Stock will be empty if no inventory is assigned to the warehouse.
 
 
@@ -82,12 +84,12 @@ Postman (API Testing)
 ### How to Run
 
 Clone the repository:
-git clone https://github.com/ravi-gautam17/StockPro-Backend.git
+git clone https://github.com/ravi-gautam17/StockPro-Backend.git <br>
 Navigate to project:
-cd stockpro-backend
-Configure database in application.properties
+cd stockpro-backend  <br>
+Configure database in application.properties <br>
 Run the application:
-mvn spring-boot:run
+mvn spring-boot:run <br>
 Access APIs at:
 http://localhost:8080
 
