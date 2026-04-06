@@ -88,7 +88,6 @@ public class SupplierService {
     }
  
 
-
     public List<Supplier> search(String q, String city, String country) {
         if (q != null && !q.isBlank()) {
             return supplierRepository.searchActiveByName(q.trim());
