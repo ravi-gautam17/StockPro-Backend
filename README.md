@@ -83,7 +83,7 @@ All APIs require JWT authentication.
 Header:
 Authorization: Bearer <JWT_TOKEN>
 ```
-## Key Concepts
+## 🧠 Key Concepts
 
 - Suppliers represent external vendors providing products
 - Supports filtering and search for easy lookup
@@ -92,13 +92,13 @@ Authorization: Bearer <JWT_TOKEN>
 
 Supplier management is a critical component of inventory systems, enabling efficient procurement and vendor evaluation.
 
-### Known Limitations
+### ⚠️Known Limitations
 Rating logic uses simple averaging (can be improved with rating count)
 No supplier-product mapping yet
 No purchase order integration (planned)
 No historical rating tracking
 
-### Tech Stack
+### 🛠️ Tech Stack
 Java
 Spring Boot
 Spring Data JPA
@@ -106,7 +106,7 @@ Hibernate
 MySQL / PostgreSQL
 Postman (API Testing)
 
-### How to Run
+### ▶️ How to Run
 Clone the repository:
 ```
 git clone https://github.com/ravi-gautam17/StockPro-Backend.git
