@@ -19,8 +19,9 @@ This module is part of the **StockPro Inventory Management System** and handles 
 ## 🧱 API Endpoints
 
 ### 📍 Base URL
+```
 http://localhost:8080/api/v1/warehouses
-
+```
 
 ---
 
@@ -84,14 +85,22 @@ Postman (API Testing)
 ### How to Run
 
 Clone the repository:
-git clone https://github.com/ravi-gautam17/StockPro-Backend.git <br>
+```
+git clone https://github.com/ravi-gautam17/StockPro-Backend.git 
+```
 Navigate to project:
-cd stockpro-backend  <br>
+```
+cd stockpro-backend
+``` 
 Configure database in application.properties <br>
 Run the application:
-mvn spring-boot:run <br>
+```
+mvn spring-boot:run
+```
 Access APIs at:
+```
 http://localhost:8080
+```
 
 
 ### Author
