@@ -4,6 +4,7 @@ import com.stockpro.auth.domain.User;
 import com.stockpro.auth.domain.UserRole;
 import com.stockpro.auth.repository.UserRepository;
 
+import com.stockpro.movement.domain.MovementType;
 import com.stockpro.product.domain.Product;
 import com.stockpro.product.repository.ProductRepository;
 import com.stockpro.purchase.domain.POLineItem;
@@ -168,89 +169,52 @@ public class PurchaseOrderService {
      */
     @Transactional
     public PurchaseOrder receiveGoods(Long poId, Long performerId, Map<Long, Integer> lineIdToQty) {
-
-        //  1. Fetch Purchase Order
         PurchaseOrder po = getPo(poId);
-
-        //  2. Validate PO state
-        // Only APPROVED or PARTIALLY_RECEIVED POs can accept goods
-        if (po.getStatus() != PurchaseOrderStatus.APPROVED
-                && po.getStatus() != PurchaseOrderStatus.PARTIALLY_RECEIVED) {
-
-            throw new IllegalStateException(
-                    "PO must be APPROVED or PARTIALLY_RECEIVED to receive goods"
-            );
+        if (po.getStatus() != PurchaseOrderStatus.APPROVED && po.getStatus() != PurchaseOrderStatus.PARTIALLY_RECEIVED) {
+            throw new IllegalStateException("PO must be APPROVED or PARTIALLY_RECEIVED to receive goods");
         }
 
-        //  3. Get Warehouse linked to PO
         Warehouse wh = po.getWarehouse();
-
-        //  4. Fetch user performing this operation
         User performer = userRepository.findById(performerId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
-
-        //  5. SECURITY CHECK
-        // Ensure user has access to this warehouse
         warehouseAccessService.requireWarehouseAccess(performer, wh.getId());
 
-        //  6. Process each line item being received
         for (var e : lineIdToQty.entrySet()) {
-
-            // e.getKey()   → lineItemId
-            // e.getValue() → qty to receive now
-
-            // 🔹 6.1 Find the corresponding line item in PO
             POLineItem line = po.getLineItems().stream()
                     .filter(li -> li.getId().equals(e.getKey()))
                     .findFirst()
-                    .orElseThrow(() ->
-                            new IllegalArgumentException("Unknown line: " + e.getKey())
-                    );
-
+                    .orElseThrow(() -> new IllegalArgumentException("Unknown line: " + e.getKey()));
             int recv = e.getValue();
-
-            //  6.2 Ignore invalid/zero input
             if (recv <= 0) {
                 continue;
             }
-
-            // 6.3 Calculate remaining quantity
             int remaining = line.getQuantity() - line.getReceivedQty();
-
-            // 6.4 Prevent over-receiving
             if (recv > remaining) {
-                throw new IllegalArgumentException(
-                        "Receive qty exceeds remaining for line " + line.getId()
-                );
+                throw new IllegalArgumentException("Receive qty exceeds remaining for line " + line.getId());
             }
-
-            // 6.5 Update received quantity
             line.setReceivedQty(line.getReceivedQty() + recv);
 
-
+            stockInventoryService.recordMovement(
+                    line.getProduct().getId(),
+                    wh.getId(),
+                    MovementType.STOCK_IN,
+                    recv,
+                    performerId,
+                    poId,
+                    "PO",
+                    line.getUnitCost(),
+                    "GRN for PO " + poId);
         }
 
-        //  7. Check if ALL items are fully received
-        boolean allDone = po.getLineItems().stream()
-                .allMatch(li -> li.getReceivedQty() >= li.getQuantity());
-
-        //  8. Update PO status based on completion
-        po.setStatus(
-                allDone
-                        ? PurchaseOrderStatus.FULLY_RECEIVED
-                        : PurchaseOrderStatus.PARTIALLY_RECEIVED
-        );
-
-        //  9. If fully received → set received date
+        boolean allDone = po.getLineItems().stream().allMatch(li -> li.getReceivedQty() >= li.getQuantity());
+        po.setStatus(allDone ? PurchaseOrderStatus.FULLY_RECEIVED : PurchaseOrderStatus.PARTIALLY_RECEIVED);
         if (allDone) {
             po.setReceivedDate(LocalDate.now());
         }
-
-        //  10. Save updated PO
         purchaseOrderRepository.save(po);
 
+        // Supplier rating hook: case study — optionally bump rating (simplified: skip).
 
-        //  12. Return updated PO
         return po;
     }
 
