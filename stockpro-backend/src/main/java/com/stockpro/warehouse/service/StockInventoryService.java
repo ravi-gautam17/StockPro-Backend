@@ -7,6 +7,7 @@ import com.stockpro.movement.domain.StockMovement;
 import com.stockpro.movement.repository.StockMovementRepository;
 import com.stockpro.product.domain.Product;
 import com.stockpro.product.repository.ProductRepository;
+import com.stockpro.alert.service.AlertService;
 import com.stockpro.warehouse.domain.StockLevel;
 import com.stockpro.warehouse.domain.Warehouse;
 import com.stockpro.warehouse.repository.StockLevelRepository;
@@ -32,6 +33,7 @@ public class StockInventoryService {
     private final ProductRepository productRepository;
     private final WarehouseRepository warehouseRepository;
     private final UserRepository userRepository;
+    private final AlertService alertService;
     private final WarehouseAccessService warehouseAccessService;
     private final WarehouseCapacityService warehouseCapacityService;
 
@@ -40,6 +42,7 @@ public class StockInventoryService {
                                  ProductRepository productRepository,
                                  WarehouseRepository warehouseRepository,
                                  UserRepository userRepository,
+                                 @Lazy AlertService alertService,
                                  WarehouseAccessService warehouseAccessService,
                                  WarehouseCapacityService warehouseCapacityService) {
         this.stockLevelRepository = stockLevelRepository;
@@ -47,6 +50,7 @@ public class StockInventoryService {
         this.productRepository = productRepository;
         this.warehouseRepository = warehouseRepository;
         this.userRepository = userRepository;
+        this.alertService = alertService;
         this.warehouseAccessService = warehouseAccessService;
         this.warehouseCapacityService = warehouseCapacityService;
     }
@@ -123,6 +127,7 @@ public class StockInventoryService {
         mov.setBalanceAfter(newQty);
         movementRepository.save(mov);
 
+        alertService.evaluateThresholds(product, warehouse, newQty);
 
         warehouseCapacityService.refreshUsedCapacity(warehouseId);
 
