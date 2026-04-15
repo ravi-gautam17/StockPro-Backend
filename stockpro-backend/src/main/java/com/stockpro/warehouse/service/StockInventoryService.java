@@ -1,5 +1,6 @@
 package com.stockpro.warehouse.service;
 
+import com.stockpro.audit.service.AuditService;
 import com.stockpro.auth.domain.User;
 import com.stockpro.auth.repository.UserRepository;
 import com.stockpro.movement.domain.MovementType;
@@ -33,6 +34,7 @@ public class StockInventoryService {
     private final ProductRepository productRepository;
     private final WarehouseRepository warehouseRepository;
     private final UserRepository userRepository;
+    private final AuditService auditService;
     private final AlertService alertService;
     private final WarehouseAccessService warehouseAccessService;
     private final WarehouseCapacityService warehouseCapacityService;
@@ -42,6 +44,7 @@ public class StockInventoryService {
                                  ProductRepository productRepository,
                                  WarehouseRepository warehouseRepository,
                                  UserRepository userRepository,
+                                 AuditService auditService,
                                  @Lazy AlertService alertService,
                                  WarehouseAccessService warehouseAccessService,
                                  WarehouseCapacityService warehouseCapacityService) {
@@ -50,6 +53,7 @@ public class StockInventoryService {
         this.productRepository = productRepository;
         this.warehouseRepository = warehouseRepository;
         this.userRepository = userRepository;
+        this.auditService = auditService;
         this.alertService = alertService;
         this.warehouseAccessService = warehouseAccessService;
         this.warehouseCapacityService = warehouseCapacityService;
@@ -126,6 +130,9 @@ public class StockInventoryService {
         mov.setNotes(notes);
         mov.setBalanceAfter(newQty);
         movementRepository.save(mov);
+
+        auditService.log(performer.getId(), "STOCK_MOVEMENT", "StockMovement",
+                String.valueOf(mov.getId()), "{\"type\":\"" + type + "\",\"delta\":" + delta + "}");
 
         alertService.evaluateThresholds(product, warehouse, newQty);
 

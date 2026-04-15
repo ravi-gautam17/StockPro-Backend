@@ -1,6 +1,7 @@
 package com.stockpro.purchase.service;
 
 import com.stockpro.alert.service.AlertService;
+import com.stockpro.audit.service.AuditService;
 import com.stockpro.auth.domain.User;
 import com.stockpro.auth.domain.UserRole;
 import com.stockpro.auth.repository.UserRepository;
@@ -39,6 +40,7 @@ public class PurchaseOrderService {
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
     private final StockInventoryService stockInventoryService;
+    private final AuditService auditService;
     private final AlertService alertService;
     private final WarehouseAccessService warehouseAccessService;
 
@@ -48,6 +50,7 @@ public class PurchaseOrderService {
                                 UserRepository userRepository,
                                 ProductRepository productRepository,
                                 StockInventoryService stockInventoryService,
+                                AuditService auditService,
                                 AlertService alertService,
                                 WarehouseAccessService warehouseAccessService) {
         this.purchaseOrderRepository = purchaseOrderRepository;
@@ -56,6 +59,7 @@ public class PurchaseOrderService {
         this.userRepository = userRepository;
         this.productRepository = productRepository;
         this.stockInventoryService = stockInventoryService;
+        this.auditService = auditService;
         this.alertService = alertService;
         this.warehouseAccessService = warehouseAccessService;
     }
@@ -102,6 +106,7 @@ public class PurchaseOrderService {
         }
         po.recalcTotal();
         PurchaseOrder saved = purchaseOrderRepository.save(po);
+        auditService.log(createdById, "PO_CREATE", "PurchaseOrder", String.valueOf(saved.getId()), null);
         return saved;
     }
 
@@ -112,6 +117,7 @@ public class PurchaseOrderService {
             throw new IllegalStateException("Only DRAFT or REJECTED PO can be submitted");
         }
         po.setStatus(PurchaseOrderStatus.PENDING_APPROVAL);
+        auditService.log(actorId, "PO_SUBMIT", "PurchaseOrder", String.valueOf(poId), null);
         alertService.notifyPoPendingApprovers(poId, po.getReferenceNumber() != null ? po.getReferenceNumber() : "#" + poId);
         return purchaseOrderRepository.save(po);
     }
@@ -123,6 +129,7 @@ public class PurchaseOrderService {
             throw new IllegalStateException("PO is not pending approval");
         }
         po.setStatus(PurchaseOrderStatus.APPROVED);
+        auditService.log(actorId, "PO_APPROVE", "PurchaseOrder", String.valueOf(poId), null);
         return purchaseOrderRepository.save(po);
     }
 
@@ -133,6 +140,7 @@ public class PurchaseOrderService {
             throw new IllegalStateException("PO is not pending approval");
         }
         po.setStatus(PurchaseOrderStatus.REJECTED);
+        auditService.log(actorId, "PO_REJECT", "PurchaseOrder", String.valueOf(poId), null);
         return purchaseOrderRepository.save(po);
     }
 
@@ -144,6 +152,7 @@ public class PurchaseOrderService {
         }
         po.setStatus(PurchaseOrderStatus.CANCELLED);
         po.setNotes((po.getNotes() != null ? po.getNotes() + "\n" : "") + "Cancelled: " + reason);
+        auditService.log(actorId, "PO_CANCEL", "PurchaseOrder", String.valueOf(poId), reason);
         return purchaseOrderRepository.save(po);
     }
 
@@ -195,6 +204,7 @@ public class PurchaseOrderService {
             po.setReceivedDate(LocalDate.now());
         }
         purchaseOrderRepository.save(po);
+        auditService.log(performerId, "PO_RECEIVE", "PurchaseOrder", String.valueOf(poId), lineIdToQty.toString());
 
         // Supplier rating hook: case study — optionally bump rating (simplified: skip).
 
